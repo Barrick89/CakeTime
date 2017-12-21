@@ -8,10 +8,15 @@ import java.util.ArrayList;
 
 public class Recipe implements Parcelable {
 
+    private int mId;
+    private String mName;
     private ArrayList<Ingredient> mIngredients;
     private ArrayList<RecipeStep> mRecipeSteps;
 
-    public Recipe(ArrayList<Ingredient> ingredients, ArrayList<RecipeStep> recipeSteps) {
+    public Recipe(int id, String name,
+                  ArrayList<Ingredient> ingredients, ArrayList<RecipeStep> recipeSteps) {
+        mId = id;
+        mName = name;
         mIngredients = ingredients;
         mRecipeSteps = recipeSteps;
     }
