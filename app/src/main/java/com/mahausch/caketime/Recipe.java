@@ -16,6 +16,10 @@ public class Recipe implements Parcelable {
         mRecipeSteps = recipeSteps;
     }
 
+    public Recipe(Parcel in) {
+        readFromParcel(in);
+    }
+
     public ArrayList<Ingredient> getIngredients() {
         return mIngredients;
     }
