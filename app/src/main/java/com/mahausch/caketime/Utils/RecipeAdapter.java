@@ -15,6 +15,11 @@ import java.util.ArrayList;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHolder> {
 
     private ArrayList<Recipe> mRecipesList;
+    private final RecipeAdapterOnClickHandler mOnClickHandler;
+
+    public RecipeAdapter(RecipeAdapterOnClickHandler onClickHandler) {
+        mOnClickHandler = onClickHandler;
+    }
 
     @Override
     public RecipeAdapter.RecipeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,13 +55,25 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         notifyDataSetChanged();
     }
 
-    public class RecipeHolder extends RecyclerView.ViewHolder {
+    public interface RecipeAdapterOnClickHandler {
+        public void onClick(Recipe recipeData);
+    }
+
+    public class RecipeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final TextView mName;
 
         public RecipeHolder(View itemView) {
             super(itemView);
             mName = (TextView) itemView.findViewById(R.id.name);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Recipe recipe = mRecipesList.get(position);
+            mOnClickHandler.onClick(recipe);
         }
     }
 }
