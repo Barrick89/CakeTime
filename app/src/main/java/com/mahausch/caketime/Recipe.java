@@ -25,6 +25,15 @@ public class Recipe implements Parcelable {
         readFromParcel(in);
     }
 
+
+    public int getId() {
+        return mId;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
     public ArrayList<Ingredient> getIngredients() {
         return mIngredients;
     }
