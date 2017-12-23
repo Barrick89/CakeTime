@@ -76,5 +76,42 @@ public class JsonUtils {
         return recipeList;
     }
 
+    private static ArrayList<Ingredient> getIngredientsList(JSONArray ingredients) throws JSONException {
+
+        ArrayList<Ingredient> ingredientsList = new ArrayList<>();
+
+        for (int i = 0; i < ingredients.length(); i++) {
+            JSONObject ingredientObject = ingredients.getJSONObject(i);
+
+            int quantity = ingredientObject.getInt("quantity");
+            String measure = ingredientObject.getString("measure");
+            String ingredient = ingredientObject.getString("ingredient");
+
+            Ingredient ing = new Ingredient(quantity, measure, ingredient);
+            ingredientsList.add(ing);
+        }
+        return ingredientsList;
+    }
+
+    private static ArrayList<RecipeStep> getStepsList(JSONArray steps) throws JSONException {
+
+        ArrayList<RecipeStep> stepsList = new ArrayList<>();
+
+        for (int i = 0; i < steps.length(); i++) {
+            JSONObject stepObject = steps.getJSONObject(i);
+
+            int id = stepObject.getInt("id");
+            String shortDescription = stepObject.getString("shortDescription");
+            String description = stepObject.getString("description");
+            String videoURL = stepObject.getString("videoURL");
+            String thumbnailURL = stepObject.getString("thumbnailURL");
+
+            RecipeStep step = new RecipeStep(id, shortDescription,
+                    description, videoURL, thumbnailURL);
+            stepsList.add(step);
+        }
+        return stepsList;
+    }
+
 
 }
