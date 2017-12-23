@@ -45,6 +45,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         }
     }
 
+    public void setRecipesList(ArrayList<Recipe> recipesList) {
+        mRecipesList = recipesList;
+        notifyDataSetChanged();
+    }
+
     public class RecipeHolder extends RecyclerView.ViewHolder {
 
         public final TextView mName;
