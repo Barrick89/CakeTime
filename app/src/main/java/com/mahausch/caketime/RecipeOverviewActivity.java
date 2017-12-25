@@ -11,16 +11,22 @@ import com.mahausch.caketime.Utils.RecipeAdapter;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RecipeOverviewActivity extends AppCompatActivity implements RecipeAdapter.RecipeAdapterOnClickHandler {
+
+    @BindView(R.id.recycler_view)
+    RecyclerView recycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_overview);
 
-        ArrayList<Recipe> list = JsonUtils.getRecipesFromJson(this);
-        RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler_view);
+        ButterKnife.bind(this);
 
+        ArrayList<Recipe> list = JsonUtils.getRecipesFromJson(this);
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recycler.setLayoutManager(manager);

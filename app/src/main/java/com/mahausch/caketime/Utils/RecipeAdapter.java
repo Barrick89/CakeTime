@@ -12,6 +12,9 @@ import com.mahausch.caketime.Recipe;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHolder> {
 
     private ArrayList<Recipe> mRecipesList;
@@ -61,11 +64,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     public class RecipeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public final TextView mName;
+        @BindView(R.id.name)
+        TextView mName;
 
         public RecipeHolder(View itemView) {
             super(itemView);
-            mName = (TextView) itemView.findViewById(R.id.name);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
