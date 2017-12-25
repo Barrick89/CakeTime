@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mahausch.caketime.R;
 import com.mahausch.caketime.Recipe;
 
@@ -19,6 +21,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     private ArrayList<Recipe> mRecipesList;
     private final RecipeAdapterOnClickHandler mOnClickHandler;
+    private Context mContext;
 
     public RecipeAdapter(RecipeAdapterOnClickHandler onClickHandler) {
         mOnClickHandler = onClickHandler;
@@ -27,8 +30,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     @Override
     public RecipeAdapter.RecipeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
+        mContext = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(mContext);
         int layout = R.layout.recipe_list_item;
 
         View view = inflater.inflate(layout, parent, false);
@@ -41,6 +44,20 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         Recipe recipe = mRecipesList.get(position);
         String name = recipe.getName();
         holder.mName.setText(name);
+
+        switch (position) {
+            case 0:
+                Glide.with(mContext).load(R.drawable.placeholder_1).into(holder.mImage);
+                break;
+            case 1:
+                Glide.with(mContext).load(R.drawable.placeholder_2).into(holder.mImage);
+                break;
+            case 2:
+                Glide.with(mContext).load(R.drawable.placeholder_3).into(holder.mImage);
+                break;
+            case 3:
+                Glide.with(mContext).load(R.drawable.placeholder_4).into(holder.mImage);
+        }
     }
 
     @Override
@@ -66,6 +83,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
         @BindView(R.id.name)
         TextView mName;
+        @BindView(R.id.image)
+        ImageView mImage;
 
         public RecipeHolder(View itemView) {
             super(itemView);
