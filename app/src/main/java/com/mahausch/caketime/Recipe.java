@@ -22,6 +22,8 @@ public class Recipe implements Parcelable {
     }
 
     public Recipe(Parcel in) {
+        mIngredients = new ArrayList<>();
+        mRecipeSteps = new ArrayList<>();
         readFromParcel(in);
     }
 
@@ -49,11 +51,15 @@ public class Recipe implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeInt(mId);
+        parcel.writeString(mName);
         parcel.writeTypedList(mIngredients);
         parcel.writeTypedList(mRecipeSteps);
     }
 
     public void readFromParcel(Parcel in) {
+        mId = in.readInt();
+        mName = in.readString();
         in.readTypedList(mIngredients, Ingredient.CREATOR);
         in.readTypedList(mRecipeSteps, RecipeStep.CREATOR);
     }
