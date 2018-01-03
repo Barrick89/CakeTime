@@ -40,7 +40,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
             holder.stepName.setText(R.string.ingredients);
         } else {
             RecipeStep step = mSteps.get(position);
-            holder.stepName.setText(position + ". " + step.getmShortDescription());
+            holder.stepName.setText(position + ". " + step.getShortDescription());
         }
     }
 
