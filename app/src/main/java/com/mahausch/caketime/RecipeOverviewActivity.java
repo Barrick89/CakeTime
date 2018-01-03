@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 
 import com.mahausch.caketime.Utils.JsonUtils;
 import com.mahausch.caketime.Utils.RecipeAdapter;
@@ -20,7 +22,7 @@ public class RecipeOverviewActivity extends AppCompatActivity implements RecipeA
     @BindView(R.id.recycler_view)
     RecyclerView recycler;
 
-    LinearLayoutManager mManager;
+    RecyclerView.LayoutManager mManager;
     static Parcelable mListState;
 
     @Override
@@ -32,13 +34,30 @@ public class RecipeOverviewActivity extends AppCompatActivity implements RecipeA
 
         ArrayList<Recipe> list = JsonUtils.getRecipesFromJson(this);
 
-        mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        if (displayMetrics.densityDpi >= 300) {
+            mManager = new GridLayoutManager(this, numberOfColumns(), GridLayoutManager.VERTICAL, false);
+        } else {
+            mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        }
         recycler.setLayoutManager(mManager);
 
         RecipeAdapter adapter = new RecipeAdapter(this);
         adapter.setRecipesList(list);
         recycler.setAdapter(adapter);
 
+    }
+
+    private int numberOfColumns() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int widthDivider = 500;
+        int width = displayMetrics.widthPixels;
+        int nColumns = width / widthDivider;
+        if (nColumns < 2) return 2;
+        return nColumns;
     }
 
     @Override
