@@ -13,26 +13,39 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        Bundle intentBundle = getIntent().getExtras();
-        mRecipe = intentBundle.getParcelable("recipe");
+        if (savedInstanceState == null) {
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("recipe", mRecipe);
+            Bundle intentBundle = getIntent().getExtras();
+            mRecipe = intentBundle.getParcelable("recipe");
 
-        RecipeDetailFragment detailFragment = new RecipeDetailFragment();
-        detailFragment.setArguments(bundle);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("recipe", mRecipe);
 
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().add(R.id.recipe_detail_fragment, detailFragment).commit();
+            RecipeDetailFragment detailFragment = new RecipeDetailFragment();
+            detailFragment.setArguments(bundle);
 
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().add(R.id.recipe_detail_fragment, detailFragment).commit();
+        }
 
     }
 
     @Override
     public void onStepSelected(RecipeStep step) {
+
+        StepFragment stepFragment = new StepFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("step", step);
+        stepFragment.setArguments(bundle);
+
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.recipe_detail_fragment, stepFragment)
+                .addToBackStack(null)
+                .commit();
 
     }
 
