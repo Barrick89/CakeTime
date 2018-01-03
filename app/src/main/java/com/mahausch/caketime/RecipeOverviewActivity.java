@@ -2,6 +2,7 @@ package com.mahausch.caketime;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,9 @@ public class RecipeOverviewActivity extends AppCompatActivity implements RecipeA
     @BindView(R.id.recycler_view)
     RecyclerView recycler;
 
+    LinearLayoutManager mManager;
+    static Parcelable mListState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +32,8 @@ public class RecipeOverviewActivity extends AppCompatActivity implements RecipeA
 
         ArrayList<Recipe> list = JsonUtils.getRecipesFromJson(this);
 
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recycler.setLayoutManager(manager);
+        mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recycler.setLayoutManager(mManager);
 
         RecipeAdapter adapter = new RecipeAdapter(this);
         adapter.setRecipesList(list);
@@ -43,5 +47,20 @@ public class RecipeOverviewActivity extends AppCompatActivity implements RecipeA
         Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtra("recipe", recipeData);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        mListState = mManager.onSaveInstanceState();
+        outState.putParcelable("listState", mListState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        mListState = savedInstanceState.getParcelable("listState");
     }
 }

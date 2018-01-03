@@ -2,6 +2,8 @@ package com.mahausch.caketime;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +21,9 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.StepAd
     @BindView(R.id.recycler_view_detail)
     RecyclerView recycler;
 
+    LinearLayoutManager mManager;
     OnStepClickListener mCallback;
+    static Parcelable mListState;
 
     public RecipeDetailFragment() {
         // Required empty public constructor
@@ -56,7 +60,8 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.StepAd
         ArrayList<RecipeStep> steps = recipe.getRecipeSteps();
         ArrayList<Ingredient> ingredients = recipe.getIngredients();
 
-        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        mManager = new LinearLayoutManager(getContext());
+        recycler.setLayoutManager(mManager);
         StepAdapter adapter = new StepAdapter(this);
         recycler.setAdapter(adapter);
         adapter.setStepsList(steps, ingredients);
@@ -72,5 +77,21 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.StepAd
     @Override
     public void onClickStep(RecipeStep step) {
         mCallback.onStepSelected(step);
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        mListState = mManager.onSaveInstanceState();
+        outState.putParcelable("listState", mListState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null)
+            mListState = savedInstanceState.getParcelable("listState");
     }
 }
