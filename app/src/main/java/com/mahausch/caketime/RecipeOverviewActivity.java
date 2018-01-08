@@ -34,9 +34,9 @@ public class RecipeOverviewActivity extends AppCompatActivity implements RecipeA
 
         ArrayList<Recipe> list = JsonUtils.getRecipesFromJson(this);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        if (displayMetrics.densityDpi >= 300) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        if (dpWidth >= 600) {
             mManager = new GridLayoutManager(this, numberOfColumns(), GridLayoutManager.VERTICAL, false);
         } else {
             mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

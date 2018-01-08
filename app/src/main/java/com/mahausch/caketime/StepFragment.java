@@ -7,15 +7,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -42,6 +46,7 @@ import butterknife.ButterKnife;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 public class StepFragment extends Fragment implements ExoPlayer.EventListener {
 
@@ -67,16 +72,38 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_step, container, false);
         ButterKnife.bind(this, rootView);
-        mPlayerView.setVisibility(View.GONE);
 
         Bundle bundle = getArguments();
         RecipeStep step = bundle.getParcelable("step");
 
-        if (!step.getVideoUrl().isEmpty()) {
-            mPlayerView.setVisibility(View.VISIBLE);
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == ORIENTATION_LANDSCAPE && !RecipeDetailActivity.mTwoPane && !step.getVideoUrl().isEmpty()) {
             mPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+
+            ViewGroup.LayoutParams params = mPlayerView.getLayoutParams();
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            mPlayerView.setLayoutParams(params);
+
+            mStepDescription.setVisibility(View.INVISIBLE);
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            if (null != actionBar) {
+                actionBar.hide();
+
+                if (Build.VERSION.SDK_INT < 16) {
+                    getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                } else {
+                    View decorView = getActivity().getWindow().getDecorView();
+                    int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+                    decorView.setSystemUiVisibility(uiOptions);
+                }
+            }
+        }
+
+        if (!step.getVideoUrl().isEmpty()) {
             initializeMediaSession();
             initializePlayer(Uri.parse(step.getVideoUrl()));
+            mPlayerView.setVisibility(View.VISIBLE);
         }
 
         mStepDescription.setText(step.getDescription());

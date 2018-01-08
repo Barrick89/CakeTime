@@ -10,12 +10,17 @@ import java.util.ArrayList;
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener {
 
     private Recipe mRecipe;
+    static boolean mTwoPane = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
+
+        if (findViewById(R.id.recipe_step_fragment) == null) {
+            mTwoPane = false;
+        }
 
         if (savedInstanceState == null) {
 
@@ -27,9 +32,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
             RecipeDetailFragment detailFragment = new RecipeDetailFragment();
             detailFragment.setArguments(bundle);
-
             FragmentManager manager = getSupportFragmentManager();
+
             manager.beginTransaction().add(R.id.recipe_detail_fragment, detailFragment).commit();
+
+            if (mTwoPane) {
+                IngredientsFragment ingredientsFragment = new IngredientsFragment();
+                bundle = new Bundle();
+                bundle.putParcelableArrayList("ingredients", mRecipe.getIngredients());
+                ingredientsFragment.setArguments(bundle);
+                manager.beginTransaction().add(R.id.recipe_step_fragment, ingredientsFragment).commit();
+            }
         }
 
     }
@@ -43,7 +56,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         stepFragment.setArguments(bundle);
 
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.recipe_detail_fragment, stepFragment)
+
+        int view;
+        if (mTwoPane) {
+            view = R.id.recipe_step_fragment;
+        } else {
+            view = R.id.recipe_detail_fragment;
+        }
+
+        manager.beginTransaction().replace(view, stepFragment)
                 .addToBackStack(null)
                 .commit();
 
@@ -58,7 +79,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         ingredientsFragment.setArguments(bundle);
 
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.recipe_detail_fragment, ingredientsFragment)
+
+        int view;
+        if (mTwoPane) {
+            view = R.id.recipe_step_fragment;
+        } else {
+            view = R.id.recipe_detail_fragment;
+        }
+
+        manager.beginTransaction().replace(view, ingredientsFragment)
                 .addToBackStack(null)
                 .commit();
     }
