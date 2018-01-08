@@ -23,12 +23,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.RecipeOverviewActivity" />
         </activity>
-
-        <receiver android:name=".fragments.StepFragment$MediaReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
-        </receiver>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
