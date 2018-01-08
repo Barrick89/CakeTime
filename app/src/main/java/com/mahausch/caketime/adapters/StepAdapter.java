@@ -44,8 +44,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         if (position == 0) {
             holder.stepName.setText(R.string.ingredients);
         } else {
-            RecipeStep step = mSteps.get(position);
-            holder.stepName.setText(position + ". " + step.getShortDescription());
+            RecipeStep step = mSteps.get(position - 1);
+            holder.stepName.setText(position - 1 + ". " + step.getShortDescription());
         }
     }
 
@@ -53,7 +53,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
     public int getItemCount() {
 
         if (mSteps != null) {
-            return mSteps.size();
+            return mSteps.size() + 1;
         } else {
             return 0;
         }
@@ -92,7 +92,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
             if (selectedPos == 0) {
                 mOnClickHandler.onClickIngredient(mIngredients);
             } else {
-                RecipeStep step = mSteps.get(selectedPos);
+                RecipeStep step = mSteps.get(selectedPos - 1);
                 mOnClickHandler.onClickStep(step);
             }
         }
