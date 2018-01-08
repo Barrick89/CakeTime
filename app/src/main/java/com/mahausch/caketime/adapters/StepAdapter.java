@@ -1,4 +1,4 @@
-package com.mahausch.caketime;
+package com.mahausch.caketime.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.mahausch.caketime.Ingredient;
+import com.mahausch.caketime.R;
+import com.mahausch.caketime.RecipeStep;
 
 import java.util.ArrayList;
 
@@ -18,6 +22,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
     private ArrayList<Ingredient> mIngredients;
     private final StepAdapterOnClickHandler mOnClickHandler;
     private Context mContext;
+    private int selectedPos = RecyclerView.NO_POSITION;
 
     public StepAdapter(StepAdapterOnClickHandler onClickHandler) {
         mOnClickHandler = onClickHandler;
@@ -35,7 +40,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
     @Override
     public void onBindViewHolder(StepHolder holder, int position) {
-
+        holder.itemView.setSelected(selectedPos == position);
         if (position == 0) {
             holder.stepName.setText(R.string.ingredients);
         } else {
@@ -80,12 +85,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
         @Override
         public void onClick(View v) {
-            int position = getAdapterPosition();
+            notifyItemChanged(selectedPos);
+            selectedPos = getLayoutPosition();
+            notifyItemChanged(selectedPos);
 
-            if (position == 0) {
+            if (selectedPos == 0) {
                 mOnClickHandler.onClickIngredient(mIngredients);
             } else {
-                RecipeStep step = mSteps.get(position);
+                RecipeStep step = mSteps.get(selectedPos);
                 mOnClickHandler.onClickStep(step);
             }
         }
