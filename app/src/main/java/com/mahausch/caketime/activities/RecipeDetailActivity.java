@@ -16,9 +16,10 @@ import com.mahausch.caketime.fragments.StepFragment;
 
 import java.util.ArrayList;
 
-public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener {
+public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener, StepFragment.OnArrowClickListener {
 
-    private Recipe mRecipe;
+    private static Recipe mRecipe;
+    public static int recipeStepCount;
     public static boolean mTwoPane = true;
 
     @Override
@@ -35,6 +36,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
             Bundle intentBundle = getIntent().getExtras();
             mRecipe = intentBundle.getParcelable("recipe");
+
+            recipeStepCount = mRecipe.getRecipeSteps().size();
 
             Bundle bundle = new Bundle();
             bundle.putParcelable("recipe", mRecipe);
@@ -103,6 +106,22 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
     public void switchToFirstStep(View view) {
         RecipeStep step = mRecipe.getRecipeSteps().get(0);
+        onStepSelected(step);
+    }
+
+    @Override
+    public void onPreviousSelected(int stepId) {
+        if (stepId == 0) {
+            onIngredientsSelected(mRecipe.getIngredients());
+        } else {
+            RecipeStep step = mRecipe.getRecipeSteps().get(stepId - 1);
+            onStepSelected(step);
+        }
+    }
+
+    @Override
+    public void onNextSelected(int stepId) {
+        RecipeStep step = mRecipe.getRecipeSteps().get(stepId + 1);
         onStepSelected(step);
     }
 }

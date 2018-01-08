@@ -1,7 +1,7 @@
 package com.mahausch.caketime.fragments;
 
 
-import android.app.NotificationManager;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -44,13 +45,14 @@ import butterknife.ButterKnife;
 
 import static android.content.ContentValues.TAG;
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
-public class StepFragment extends Fragment implements ExoPlayer.EventListener {
+public class StepFragment extends Fragment implements ExoPlayer.EventListener, View.OnClickListener {
 
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
     private SimpleExoPlayer mExoPlayer;
-    private NotificationManager mNotificationManager;
+    OnArrowClickListener mCallback;
 
     @BindView(R.id.playerView)
     SimpleExoPlayerView mPlayerView;
@@ -58,11 +60,29 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
     @BindView(R.id.step_description)
     TextView mStepDescription;
 
+    @BindView(R.id.step_left_arrow)
+    ImageView mLeftArrow;
+
+    @BindView(R.id.step_right_arrow)
+    ImageView mRightArrow;
+
     RecipeStep mStep;
     long mVideoPosition;
 
     public StepFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mCallback = (OnArrowClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnArrowClickListener");
+        }
     }
 
 
@@ -75,8 +95,17 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
 
         Bundle bundle = getArguments();
         mStep = bundle.getParcelable("step");
-
         int orientation = getResources().getConfiguration().orientation;
+
+        if (!RecipeDetailActivity.mTwoPane && (mStep.getVideoUrl().isEmpty() || orientation == ORIENTATION_PORTRAIT)) {
+            mLeftArrow.setVisibility(View.VISIBLE);
+            mLeftArrow.setOnClickListener(this);
+            if (RecipeDetailActivity.recipeStepCount != mStep.getId() + 1) {
+                mRightArrow.setVisibility(View.VISIBLE);
+                mRightArrow.setOnClickListener(this);
+            }
+        }
+
         if (orientation == ORIENTATION_LANDSCAPE && !RecipeDetailActivity.mTwoPane && !mStep.getVideoUrl().isEmpty()) {
             mPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
@@ -246,4 +275,27 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
         if (savedInstanceState != null)
             mVideoPosition = savedInstanceState.getLong("videoPosition");
     }
+
+    @Override
+    public void onClick(View view) {
+        int stepId = mStep.getId();
+        int viewId = view.getId();
+
+        switch (viewId) {
+
+            case R.id.step_left_arrow:
+                mCallback.onPreviousSelected(stepId);
+                break;
+
+            case R.id.step_right_arrow:
+                mCallback.onNextSelected(stepId);
+        }
+    }
+
+    public interface OnArrowClickListener {
+        void onPreviousSelected(int stepId);
+
+        void onNextSelected(int stepId);
+    }
+
 }
