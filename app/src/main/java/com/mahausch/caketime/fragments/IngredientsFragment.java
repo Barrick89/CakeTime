@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.mahausch.caketime.Ingredient;
 import com.mahausch.caketime.R;
+import com.mahausch.caketime.activities.RecipeDetailActivity;
 import com.mahausch.caketime.adapters.IngredientsAdapter;
 
 import java.util.ArrayList;
@@ -24,6 +26,9 @@ public class IngredientsFragment extends Fragment {
     @BindView(R.id.recycler_view_ingredients)
     RecyclerView recycler;
 
+    @BindView(R.id.ingredient_right_arrow)
+    ImageView arrow;
+
     public IngredientsFragment() {
         // Required empty public constructor
     }
@@ -35,6 +40,10 @@ public class IngredientsFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_ingredients, container, false);
         ButterKnife.bind(this, rootView);
+
+        if (!RecipeDetailActivity.mTwoPane) {
+            arrow.setVisibility(View.VISIBLE);
+        }
 
         Bundle bundle = getArguments();
         ArrayList<Ingredient> ingredients = bundle.getParcelableArrayList("ingredients");

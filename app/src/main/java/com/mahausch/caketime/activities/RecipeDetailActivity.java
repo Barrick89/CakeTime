@@ -4,6 +4,7 @@ package com.mahausch.caketime.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.mahausch.caketime.Ingredient;
 import com.mahausch.caketime.R;
@@ -98,5 +99,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         manager.beginTransaction().replace(view, ingredientsFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void switchToFirstStep(View view) {
+        RecipeStep step = mRecipe.getRecipeSteps().get(0);
+        onStepSelected(step);
     }
 }
