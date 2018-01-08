@@ -1,16 +1,24 @@
-package com.mahausch.caketime;
+package com.mahausch.caketime.activities;
 
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.mahausch.caketime.Ingredient;
+import com.mahausch.caketime.R;
+import com.mahausch.caketime.Recipe;
+import com.mahausch.caketime.RecipeStep;
+import com.mahausch.caketime.fragments.IngredientsFragment;
+import com.mahausch.caketime.fragments.RecipeDetailFragment;
+import com.mahausch.caketime.fragments.StepFragment;
+
 import java.util.ArrayList;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener {
 
     private Recipe mRecipe;
-    static boolean mTwoPane = true;
+    public static boolean mTwoPane = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

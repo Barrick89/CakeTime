@@ -1,4 +1,4 @@
-package com.mahausch.caketime;
+package com.mahausch.caketime.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 
-import com.mahausch.caketime.Utils.JsonUtils;
-import com.mahausch.caketime.Utils.RecipeAdapter;
+import com.mahausch.caketime.R;
+import com.mahausch.caketime.Recipe;
+import com.mahausch.caketime.adapters.RecipeAdapter;
+import com.mahausch.caketime.utils.JsonUtils;
 
 import java.util.ArrayList;
 

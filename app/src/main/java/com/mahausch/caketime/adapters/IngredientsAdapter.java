@@ -1,4 +1,4 @@
-package com.mahausch.caketime;
+package com.mahausch.caketime.adapters;
 
 
 import android.content.Context;
@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.mahausch.caketime.Ingredient;
+import com.mahausch.caketime.R;
 
 import java.util.ArrayList;
 

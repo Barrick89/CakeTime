@@ -1,4 +1,4 @@
-package com.mahausch.caketime.Utils;
+package com.mahausch.caketime.utils;
 
 
 import android.content.Context;

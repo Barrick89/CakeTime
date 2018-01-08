@@ -1,4 +1,4 @@
-package com.mahausch.caketime;
+package com.mahausch.caketime.fragments;
 
 
 import android.os.Bundle;
@@ -8,6 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.mahausch.caketime.Ingredient;
+import com.mahausch.caketime.R;
+import com.mahausch.caketime.adapters.IngredientsAdapter;
 
 import java.util.ArrayList;
 

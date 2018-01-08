@@ -1,4 +1,4 @@
-package com.mahausch.caketime;
+package com.mahausch.caketime.fragments;
 
 
 import android.app.NotificationManager;
@@ -40,6 +40,9 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.mahausch.caketime.R;
+import com.mahausch.caketime.RecipeStep;
+import com.mahausch.caketime.activities.RecipeDetailActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
