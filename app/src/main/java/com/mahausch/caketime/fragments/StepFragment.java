@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -57,6 +58,9 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
     @BindView(R.id.step_description)
     TextView mStepDescription;
 
+    RecipeStep mStep;
+    long mVideoPosition;
+
     public StepFragment() {
         // Required empty public constructor
     }
@@ -70,10 +74,10 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
         ButterKnife.bind(this, rootView);
 
         Bundle bundle = getArguments();
-        RecipeStep step = bundle.getParcelable("step");
+        mStep = bundle.getParcelable("step");
 
         int orientation = getResources().getConfiguration().orientation;
-        if (orientation == ORIENTATION_LANDSCAPE && !RecipeDetailActivity.mTwoPane && !step.getVideoUrl().isEmpty()) {
+        if (orientation == ORIENTATION_LANDSCAPE && !RecipeDetailActivity.mTwoPane && !mStep.getVideoUrl().isEmpty()) {
             mPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
             ViewGroup.LayoutParams params = mPlayerView.getLayoutParams();
@@ -96,13 +100,13 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
             }
         }
 
-        if (!step.getVideoUrl().isEmpty()) {
+        if (!mStep.getVideoUrl().isEmpty()) {
             initializeMediaSession();
-            initializePlayer(Uri.parse(step.getVideoUrl()));
+            initializePlayer(Uri.parse(mStep.getVideoUrl()));
             mPlayerView.setVisibility(View.VISIBLE);
         }
 
-        mStepDescription.setText(step.getDescription());
+        mStepDescription.setText(mStep.getDescription());
 
         return rootView;
     }
@@ -205,5 +209,41 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
             releasePlayer();
             mMediaSession.setActive(false);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mPlayerView.isShown()) {
+            mExoPlayer.setPlayWhenReady(false);
+            mExoPlayer.getPlaybackState();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!mStep.getVideoUrl().isEmpty()) {
+            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.getPlaybackState();
+            mExoPlayer.seekTo(mVideoPosition);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mExoPlayer != null) {
+            mVideoPosition = mExoPlayer.getCurrentPosition();
+            outState.putLong("videoPosition", mVideoPosition);
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null)
+            mVideoPosition = savedInstanceState.getLong("videoPosition");
     }
 }
