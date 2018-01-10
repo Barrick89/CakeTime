@@ -47,6 +47,7 @@ import static android.content.ContentValues.TAG;
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
+//Fragment to show the step details (mediaplayer, step description)
 public class StepFragment extends Fragment implements ExoPlayer.EventListener, View.OnClickListener {
 
     private static MediaSessionCompat mMediaSession;
@@ -73,6 +74,7 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
         // Required empty public constructor
     }
 
+    //Check if Activity implements callback interface
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -97,6 +99,7 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
         mStep = bundle.getParcelable("step");
         int orientation = getResources().getConfiguration().orientation;
 
+        //Make the "previous and next arrows" visible if display is phone size and not in landscape
         if (!RecipeDetailActivity.mTwoPane && (mStep.getVideoUrl().isEmpty() || orientation == ORIENTATION_PORTRAIT)) {
             mLeftArrow.setVisibility(View.VISIBLE);
             mLeftArrow.setOnClickListener(this);
@@ -106,6 +109,9 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
             }
         }
 
+        /*Make the mediaplayer fill the screen if there is a video, the device is a phone and
+         * the orientation is landscape mode.
+         */
         if (orientation == ORIENTATION_LANDSCAPE && !RecipeDetailActivity.mTwoPane && !mStep.getVideoUrl().isEmpty()) {
             mPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
@@ -129,6 +135,7 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
             }
         }
 
+        //If there is a video initialize the mediaplayer
         if (!mStep.getVideoUrl().isEmpty()) {
             initializeMediaSession();
             initializePlayer(Uri.parse(mStep.getVideoUrl()));
@@ -276,6 +283,7 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
             mVideoPosition = savedInstanceState.getLong("videoPosition");
     }
 
+    //If one of the arrows gets clicked then previous/next step is displayed via callback
     @Override
     public void onClick(View view) {
         int stepId = mStep.getId();

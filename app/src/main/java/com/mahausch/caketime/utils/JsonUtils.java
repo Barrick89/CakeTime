@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+//Class to create java objects from JSON file
 public class JsonUtils {
 
 

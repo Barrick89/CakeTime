@@ -16,7 +16,10 @@ import com.mahausch.caketime.fragments.StepFragment;
 
 import java.util.ArrayList;
 
-public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener, StepFragment.OnArrowClickListener {
+//Activity to display the recipe steps and details
+
+public class RecipeDetailActivity extends AppCompatActivity
+        implements RecipeDetailFragment.OnStepClickListener, StepFragment.OnArrowClickListener {
 
     private static Recipe mRecipe;
     public static int recipeStepCount;
@@ -33,6 +36,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
+        //Check if device is tablet size or not
         if (findViewById(R.id.recipe_step_fragment) == null) {
             mTwoPane = false;
         }
@@ -50,6 +54,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
             manager.beginTransaction().add(R.id.recipe_detail_fragment, detailFragment).commit();
 
+            //If device is tablet size then not only display step list but also display step details
             if (mTwoPane) {
                 IngredientsFragment ingredientsFragment = new IngredientsFragment();
                 bundle = new Bundle();
@@ -61,6 +66,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
     }
 
+    //Method to replace fragment with a new Stepfragment
     @Override
     public void onStepSelected(RecipeStep step) {
 
@@ -84,6 +90,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
     }
 
+    //Method to replace fragment with a new IngredientsFragment
     @Override
     public void onIngredientsSelected(ArrayList<Ingredient> ingredients) {
 
@@ -106,11 +113,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                 .commit();
     }
 
+    //Callback method for "next arrow" in IngredientsFragment
     public void switchToFirstStep(View view) {
         RecipeStep step = mRecipe.getRecipeSteps().get(0);
         onStepSelected(step);
     }
 
+    //Callback method for "previous arrow" in StepFragment
     @Override
     public void onPreviousSelected(int stepId) {
         if (stepId == 0) {
@@ -121,6 +130,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         }
     }
 
+    //Callback method for "next arrow" in StepFragment
     @Override
     public void onNextSelected(int stepId) {
         RecipeStep step = mRecipe.getRecipeSteps().get(stepId + 1);

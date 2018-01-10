@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+//Fragment to create and display the ingredients list
 public class IngredientsFragment extends Fragment {
 
     @BindView(R.id.recycler_view_ingredients)
@@ -30,7 +30,6 @@ public class IngredientsFragment extends Fragment {
     ImageView arrow;
 
     public IngredientsFragment() {
-        // Required empty public constructor
     }
 
 
@@ -41,6 +40,7 @@ public class IngredientsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_ingredients, container, false);
         ButterKnife.bind(this, rootView);
 
+        //Make the "next arrow" visible only on phones
         if (!RecipeDetailActivity.mTwoPane) {
             arrow.setVisibility(View.VISIBLE);
         }

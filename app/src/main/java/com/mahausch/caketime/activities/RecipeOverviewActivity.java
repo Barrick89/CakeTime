@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+// Activity to show a recyclerView with recipes
+
 public class RecipeOverviewActivity extends AppCompatActivity implements RecipeAdapter.RecipeAdapterOnClickHandler {
 
     @BindView(R.id.recycler_view)
@@ -36,6 +38,7 @@ public class RecipeOverviewActivity extends AppCompatActivity implements RecipeA
 
         ArrayList<Recipe> list = JsonUtils.getRecipesFromJson(this);
 
+        //Decide whether to display recipes in grid or list depending on display size
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         if (dpWidth >= 600) {
@@ -51,6 +54,7 @@ public class RecipeOverviewActivity extends AppCompatActivity implements RecipeA
 
     }
 
+    //Decide how many columns to display depending on display size
     private int numberOfColumns() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);

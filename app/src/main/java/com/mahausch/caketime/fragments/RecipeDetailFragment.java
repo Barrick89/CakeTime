@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+//Fragment that creates the list of Recipe steps
 public class RecipeDetailFragment extends Fragment implements StepAdapter.StepAdapterOnClickHandler {
 
     @BindView(R.id.recycler_view_detail)
@@ -32,7 +33,6 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.StepAd
     static Parcelable mListState;
 
     public RecipeDetailFragment() {
-        // Required empty public constructor
     }
 
     public interface OnStepClickListener {
@@ -41,6 +41,7 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.StepAd
         void onIngredientsSelected(ArrayList<Ingredient> ingredients);
     }
 
+    //Check of Activity implements the callback interface
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
