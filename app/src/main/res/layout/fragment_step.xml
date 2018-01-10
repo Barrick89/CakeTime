@@ -1,7 +1,11 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/playerView"
@@ -33,6 +37,7 @@
         android:clickable="true"
         android:focusable="true"
         android:background="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@+id/step_description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -45,7 +50,9 @@
         android:clickable="true"
         android:focusable="true"
         android:background="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@+id/step_description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
+</ScrollView>
