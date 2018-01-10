@@ -232,8 +232,8 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         if (mPlayerView.isShown()) {
             releasePlayer();
             mMediaSession.setActive(false);
