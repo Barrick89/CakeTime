@@ -25,6 +25,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Bundle intentBundle = getIntent().getExtras();
+        mRecipe = intentBundle.getParcelable("recipe");
+
+        setTitle(mRecipe.getName());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
@@ -33,9 +38,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         }
 
         if (savedInstanceState == null) {
-
-            Bundle intentBundle = getIntent().getExtras();
-            mRecipe = intentBundle.getParcelable("recipe");
 
             recipeStepCount = mRecipe.getRecipeSteps().size();
 
