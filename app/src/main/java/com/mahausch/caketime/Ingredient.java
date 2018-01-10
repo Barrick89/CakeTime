@@ -29,7 +29,8 @@ public class Ingredient implements Parcelable {
     }
 
     public String getIngredient() {
-        return mIngredient;
+        String ingredient = "- " + mIngredient + " (" + getQuantity() + " " + getMeasure() + ")";
+        return ingredient;
     }
 
     @Override
