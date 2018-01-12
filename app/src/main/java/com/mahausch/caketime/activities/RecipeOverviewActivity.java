@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +41,9 @@ public class RecipeOverviewActivity extends AppCompatActivity
     @BindView(R.id.pb_loading_indicator)
     ProgressBar mProgress;
 
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout mSwipe;
+
     RecyclerView.LayoutManager mManager;
     static Parcelable mListState;
     public static ArrayList<Recipe> mList;
@@ -68,6 +72,15 @@ public class RecipeOverviewActivity extends AppCompatActivity
         recycler.setAdapter(mAdapter);
 
         startTaskLoader();
+
+        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                startTaskLoader();
+                mSwipe.setRefreshing(false);
+            }
+        });
     }
 
     //Decide how many columns to display depending on display size
