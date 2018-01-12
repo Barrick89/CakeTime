@@ -13,11 +13,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 //Class to create java objects from JSON file
 public class JsonUtils {
 
+    private static final String RECIPE_URL =
+            "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     public static ArrayList<Recipe> getRecipesFromJson(Context context) {
         ArrayList<Recipe> recipeList = new ArrayList<>();
@@ -31,19 +36,31 @@ public class JsonUtils {
     }
 
     private static String readJSONFile(Context context) throws IOException {
-        String json = null;
+
+        URL url = new URL(RECIPE_URL);
+        HttpURLConnection urlConnection = null;
+        String jsonData = "";
+
         try {
-            InputStream is = context.getAssets().open("baking.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            InputStream input = urlConnection.getInputStream();
+
+            Scanner scanner = new Scanner(input);
+            scanner.useDelimiter("\\A");
+
+            boolean hasInput = scanner.hasNext();
+            if (hasInput) {
+                jsonData = scanner.next();
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            urlConnection.disconnect();
         }
-        return json;
+        return jsonData;
     }
 
     private static ArrayList<Recipe> createRecipesFromJsonString(String jsonData) {

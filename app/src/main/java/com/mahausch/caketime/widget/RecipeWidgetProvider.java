@@ -8,9 +8,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.widget.RemoteViews;
 
 import com.mahausch.caketime.R;
+import com.mahausch.caketime.Recipe;
+import com.mahausch.caketime.utils.JsonUtils;
+
+import java.util.ArrayList;
 
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
@@ -19,9 +24,17 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     public static final String NEXT_ARROW_CLICKED = "NEXT_ARROW_CLICKED";
 
     public static int mRecipeId;
+    public static ArrayList<Recipe> mRecipeList;
+    private Context mContext;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+
+        mContext = context;
+
+        if (mRecipeList == null) {
+            new RecipeTask().execute();
+        }
 
         for (int i = 0; i < appWidgetIds.length; ++i) {
 
@@ -76,4 +89,27 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         }
         onUpdate(context, AppWidgetManager.getInstance(context), widgetId);
     }
+
+    class RecipeTask extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                mRecipeList = JsonUtils.getRecipesFromJson(mContext);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    ;
+
+
 }
