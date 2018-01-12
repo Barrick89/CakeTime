@@ -44,7 +44,7 @@ public class RecipeWidgetService extends RemoteViewsService {
 
             ArrayList<Recipe> recipeList = RecipeWidgetProvider.mRecipeList;
 
-            if (recipeList != null) {
+            if (recipeList != null && !recipeList.isEmpty()) {
                 mRecipeName = recipeList.get(mRecipeId).getName();
                 mWidgetItems = recipeList.get(mRecipeId).getIngredients();
             }
