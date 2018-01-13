@@ -74,8 +74,8 @@ public class JsonUtils {
                 JSONObject jsonRecipe = recipeArray.getJSONObject(i);
 
                 int id = jsonRecipe.getInt("id");
-
                 String name = jsonRecipe.getString("name");
+                String image = jsonRecipe.getString("image");
 
                 JSONArray ingredients = jsonRecipe.getJSONArray("ingredients");
                 ArrayList<Ingredient> ingredientsList = getIngredientsList(ingredients);
@@ -83,7 +83,7 @@ public class JsonUtils {
                 JSONArray steps = jsonRecipe.getJSONArray("steps");
                 ArrayList<RecipeStep> stepsList = getStepsList(steps);
 
-                Recipe recipe = new Recipe(id, name, ingredientsList, stepsList);
+                Recipe recipe = new Recipe(id, name, image, ingredientsList, stepsList);
                 recipeList.add(recipe);
             }
 

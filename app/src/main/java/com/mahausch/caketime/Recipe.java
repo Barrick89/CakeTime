@@ -10,13 +10,15 @@ public class Recipe implements Parcelable {
 
     private int mId;
     private String mName;
+    private String mImage;
     private ArrayList<Ingredient> mIngredients;
     private ArrayList<RecipeStep> mRecipeSteps;
 
-    public Recipe(int id, String name,
+    public Recipe(int id, String name, String image,
                   ArrayList<Ingredient> ingredients, ArrayList<RecipeStep> recipeSteps) {
         mId = id;
         mName = name;
+        mImage = image;
         mIngredients = ingredients;
         mRecipeSteps = recipeSteps;
     }
@@ -36,6 +38,10 @@ public class Recipe implements Parcelable {
         return mName;
     }
 
+    public String getImage() {
+        return mImage;
+    }
+
     public ArrayList<Ingredient> getIngredients() {
         return mIngredients;
     }
@@ -53,6 +59,7 @@ public class Recipe implements Parcelable {
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeInt(mId);
         parcel.writeString(mName);
+        parcel.writeString(mImage);
         parcel.writeTypedList(mIngredients);
         parcel.writeTypedList(mRecipeSteps);
     }
@@ -60,6 +67,7 @@ public class Recipe implements Parcelable {
     public void readFromParcel(Parcel in) {
         mId = in.readInt();
         mName = in.readString();
+        mImage = in.readString();
         in.readTypedList(mIngredients, Ingredient.CREATOR);
         in.readTypedList(mRecipeSteps, RecipeStep.CREATOR);
     }

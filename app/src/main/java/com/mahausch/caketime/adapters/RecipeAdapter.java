@@ -44,19 +44,24 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         Recipe recipe = mRecipesList.get(position);
         String name = recipe.getName();
         holder.mName.setText(name);
+        String image = recipe.getImage();
 
-        switch (position) {
-            case 0:
-                Glide.with(mContext).load(R.drawable.placeholder_1).into(holder.mImage);
-                break;
-            case 1:
-                Glide.with(mContext).load(R.drawable.placeholder_2).into(holder.mImage);
-                break;
-            case 2:
-                Glide.with(mContext).load(R.drawable.placeholder_3).into(holder.mImage);
-                break;
-            case 3:
-                Glide.with(mContext).load(R.drawable.placeholder_4).into(holder.mImage);
+        if (image != null && !image.isEmpty()) {
+            Glide.with(mContext).load(image).into(holder.mImage);
+        } else {
+            switch (position) {
+                case 0:
+                    Glide.with(mContext).load(R.drawable.placeholder_1).into(holder.mImage);
+                    break;
+                case 1:
+                    Glide.with(mContext).load(R.drawable.placeholder_2).into(holder.mImage);
+                    break;
+                case 2:
+                    Glide.with(mContext).load(R.drawable.placeholder_3).into(holder.mImage);
+                    break;
+                case 3:
+                    Glide.with(mContext).load(R.drawable.placeholder_4).into(holder.mImage);
+            }
         }
     }
 
