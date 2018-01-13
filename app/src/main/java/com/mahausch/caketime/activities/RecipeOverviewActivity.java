@@ -6,7 +6,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.mahausch.caketime.IdlingResource.SimpleIdlingResource;
 import com.mahausch.caketime.R;
 import com.mahausch.caketime.Recipe;
 import com.mahausch.caketime.adapters.RecipeAdapter;
@@ -49,6 +53,9 @@ public class RecipeOverviewActivity extends AppCompatActivity
     public static ArrayList<Recipe> mList;
 
     private RecipeAdapter mAdapter;
+
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,5 +192,14 @@ public class RecipeOverviewActivity extends AppCompatActivity
             Toast toast = Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
     }
 }
