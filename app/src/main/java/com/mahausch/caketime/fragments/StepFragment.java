@@ -47,6 +47,7 @@ import butterknife.ButterKnife;
 import static android.content.ContentValues.TAG;
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+import static com.google.android.exoplayer2.ExoPlayer.STATE_READY;
 
 //Fragment to show the step details (mediaplayer, step description)
 public class StepFragment extends Fragment implements ExoPlayer.EventListener, View.OnClickListener {
@@ -73,6 +74,7 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
 
     RecipeStep mStep;
     long mVideoPosition;
+    boolean mIsPlaying;
 
     public StepFragment() {
         // Required empty public constructor
@@ -227,10 +229,10 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
+        if ((playbackState == STATE_READY) && playWhenReady) {
             mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
                     mExoPlayer.getCurrentPosition(), 1f);
-        } else if ((playbackState == ExoPlayer.STATE_READY)) {
+        } else if ((playbackState == STATE_READY)) {
             mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
                     mExoPlayer.getCurrentPosition(), 1f);
         }
@@ -257,19 +259,10 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (mPlayerView.isShown()) {
-            mExoPlayer.setPlayWhenReady(false);
-            mExoPlayer.getPlaybackState();
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (!mStep.getVideoUrl().isEmpty()) {
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(mIsPlaying);
             mExoPlayer.getPlaybackState();
             mExoPlayer.seekTo(mVideoPosition);
         }
@@ -282,14 +275,18 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
         if (mExoPlayer != null) {
             mVideoPosition = mExoPlayer.getCurrentPosition();
             outState.putLong("videoPosition", mVideoPosition);
+            mIsPlaying = mExoPlayer.getPlayWhenReady();
+            outState.putBoolean("isPlaying", mIsPlaying);
         }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             mVideoPosition = savedInstanceState.getLong("videoPosition");
+            mIsPlaying = savedInstanceState.getBoolean("isPlaying");
+        }
     }
 
     //If one of the arrows gets clicked then previous/next step is displayed via callback
