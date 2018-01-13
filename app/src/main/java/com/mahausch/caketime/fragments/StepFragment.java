@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -60,6 +61,9 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
 
     @BindView(R.id.step_description)
     TextView mStepDescription;
+
+    @BindView(R.id.thumbnail)
+    ImageView mThumbnail;
 
     @BindView(R.id.step_left_arrow)
     ImageView mLeftArrow;
@@ -140,6 +144,11 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
             initializeMediaSession();
             initializePlayer(Uri.parse(mStep.getVideoUrl()));
             mPlayerView.setVisibility(View.VISIBLE);
+        }
+
+        //If there is a thumbnail load the image into the imageView
+        if (!mStep.getThumbnailUrl().isEmpty()) {
+            Glide.with(this).load(mStep.getThumbnailUrl()).into(mThumbnail);
         }
 
         mStepDescription.setText(mStep.getDescription());
