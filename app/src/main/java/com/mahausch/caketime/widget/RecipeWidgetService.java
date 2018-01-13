@@ -12,6 +12,7 @@ import android.widget.RemoteViewsService;
 import com.mahausch.caketime.Ingredient;
 import com.mahausch.caketime.R;
 import com.mahausch.caketime.Recipe;
+import com.mahausch.caketime.utils.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class RecipeWidgetService extends RemoteViewsService {
         private Context mContext;
         private int mAppWidgetId;
         private int mRecipeId;
+        private ArrayList<Recipe> recipeList;
 
 
         public ListRemoteViewsFactory(Context context, Intent intent) {
@@ -42,17 +44,15 @@ public class RecipeWidgetService extends RemoteViewsService {
         @Override
         public void onCreate() {
 
-            ArrayList<Recipe> recipeList = RecipeWidgetProvider.mRecipeList;
-
-            if (recipeList != null && !recipeList.isEmpty()) {
-                mRecipeName = recipeList.get(mRecipeId).getName();
-                mWidgetItems = recipeList.get(mRecipeId).getIngredients();
-            }
         }
 
         @Override
         public void onDataSetChanged() {
-
+            recipeList = JsonUtils.getRecipesFromJson(mContext);
+            if (recipeList != null) {
+                mRecipeName = recipeList.get(mRecipeId).getName();
+                mWidgetItems = recipeList.get(mRecipeId).getIngredients();
+            }
         }
 
         @Override
@@ -72,6 +72,7 @@ public class RecipeWidgetService extends RemoteViewsService {
 
         @Override
         public RemoteViews getViewAt(int i) {
+
 
             RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
             if (i == 0) {
@@ -113,6 +114,5 @@ public class RecipeWidgetService extends RemoteViewsService {
             return true;
         }
     }
-
 
 }
