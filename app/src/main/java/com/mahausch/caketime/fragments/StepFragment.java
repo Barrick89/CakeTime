@@ -262,6 +262,8 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener, V
     public void onResume() {
         super.onResume();
         if (!mStep.getVideoUrl().isEmpty()) {
+            initializeMediaSession();
+            initializePlayer(Uri.parse(mStep.getVideoUrl()));
             mExoPlayer.setPlayWhenReady(mIsPlaying);
             mExoPlayer.getPlaybackState();
             mExoPlayer.seekTo(mVideoPosition);
