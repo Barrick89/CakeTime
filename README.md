@@ -8,3 +8,5 @@ The app has an optimized UI for large screens (tablets, TVs etc.).
 A widget makes it possible to view the ingredient lists of every recipe on
 the home screen. 
 The app requires an internet connection as the data is fetched from a server.
+
+To get started just clone the repository and get the code running in Android Studio.
