@@ -68,6 +68,7 @@
         android:src="@drawable/ic_action_left"
         android:visibility="gone"
         android:elevation="2dp"
+        android:stateListAnimator="@animator/button_elevation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -82,6 +83,7 @@
         android:src="@drawable/ic_action_right"
         android:visibility="gone"
         android:elevation="2dp"
+        android:stateListAnimator="@animator/button_elevation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
